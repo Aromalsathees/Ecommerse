@@ -1,0 +1,75 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
+
+  admin_service:
+    build: ./Admin_service
+    container_name: Admin_service
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
+    depends_on:
+      - db
+    volumes:
+      - ./Admin_service:/app
+
+  product_service:
+    build: ./product_service
+    container_name: product_service
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
+      - PRODUCT_URL=http://admin_service:8000
+    depends_on:
+      - Admin_service
+      - db
+    volumes:
+      - ./product_service:/app
+
+  order_service:
+    build: ./Order_service
+    container_name: Order_service
+    ports:
+      - "8002:8000"
+    environment:
+      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
+      - PRODUCT_URL=http://product_service:8000
+      - USER_URL=http://User_service:8000
+    depends_on:
+      - product_service
+      - User_service
+      - db
+    volumes:
+      - ./Order_service:/app
+
+  user_service:
+    build: ./User_service
+    container_name: user_service
+    ports:
+      - "8003:8000"
+    environment:
+      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
+    depends_on:
+      - db
+    volumes:
+      - ./User_service:/app
+
+volumes:
+  pgdata:
