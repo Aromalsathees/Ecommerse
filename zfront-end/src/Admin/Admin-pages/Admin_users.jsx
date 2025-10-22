@@ -7,9 +7,6 @@ const Admin_users = () => {
     { id: 3, name: 'MacBook Air M3', category: 'Electronics', price: '₹1,29,999', stock: 10 },
   ]
 
-
-
-
   return (
     <main className="max-w-6xl mx-auto bg-gray-900 min-h-screen p-6 text-white">
       {/* Header */}

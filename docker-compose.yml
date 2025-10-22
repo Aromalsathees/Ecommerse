@@ -1,75 +1,145 @@
-version: "3.9"
-
 services:
+  # Admin & Product shared database
   db:
-    image: postgres:15
+    image: postgres:16
     container_name: postgres_db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: aromal
+      POSTGRES_DB: advanced_ecommerse_db
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin_user -d advanced_ecommerse_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-volumes:
-  pgdata:
-
-
+  # Admin service
   admin_service:
-    build: ./Admin_service
-    container_name: Admin_service
+    build: ./services/Admin_service
+    container_name: admin_service
+    command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./services/Admin_service:/app
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
     depends_on:
-      - db
-    volumes:
-      - ./Admin_service:/app
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: aromal
+      POSTGRES_DB: advanced_ecommerse_db
+      DB_HOST: db
+      DB_PORT: 5432
 
+  # Product service
   product_service:
-    build: ./product_service
+    build: ./services/product_service
     container_name: product_service
-    ports:
-      - "8001:8000"
-    environment:
-      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
-      - PRODUCT_URL=http://admin_service:8000
-    depends_on:
-      - Admin_service
-      - db
+    command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8001"
     volumes:
-      - ./product_service:/app
+      - ./services/product_service:/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: aromal
+      POSTGRES_DB: advanced_ecommerse_db
+      DB_HOST: db
+      DB_PORT: 5432
 
-  order_service:
-    build: ./Order_service
-    container_name: Order_service
-    ports:
-      - "8002:8000"
+  # User database & service
+  user_db:
+    image: postgres:16
+    container_name: user_db
     environment:
-      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
-      - PRODUCT_URL=http://product_service:8000
-      - USER_URL=http://User_service:8000
-    depends_on:
-      - product_service
-      - User_service
-      - db
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: user_pass
+      POSTGRES_DB: user_db
+    ports:
+      - "5433:5432"
     volumes:
-      - ./Order_service:/app
+      - user_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_admin -d user_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   user_service:
-    build: ./User_service
+    build: ./services/User_service
     container_name: user_service
-    ports:
-      - "8003:8000"
-    environment:
-      - DATABASE_URL=postgres://youruser:yourpassword@db:5432/ecommerce
-    depends_on:
-      - db
+    command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8002"
     volumes:
-      - ./User_service:/app
+      - ./services/User_service:/app
+    ports:
+      - "8002:8002"
+    depends_on:
+      user_db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: user_pass
+      POSTGRES_DB: user_db
+      DB_HOST: user_db
+      DB_PORT: 5432
+
+  # Order database & service
+  order_db:
+    image: postgres:16
+    container_name: order_db
+    environment:
+      POSTGRES_USER: order_admin
+      POSTGRES_PASSWORD: order_pass
+      POSTGRES_DB: order_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - order_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U order_admin -d order_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  order_service:
+    build: ./services/Order_service
+    container_name: order_service
+    command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8003"
+    volumes:
+      - ./services/Order_service:/app
+    ports:
+      - "8003:8003"
+    depends_on:
+      order_db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: order_admin
+      POSTGRES_PASSWORD: order_pass
+      POSTGRES_DB: order_db
+      DB_HOST: order_db
+      DB_PORT: 5432
+
+  # React frontend
+  frontend:
+    build: ./zfront-end
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - admin_service
+      - product_service
+      - user_service
+      - order_service
 
 volumes:
   pgdata:
+  user_pgdata:
+  order_pgdata:
