@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
-import { ProductApi } from "../../api";
+import { Api } from "../../api";
 
 
 
@@ -17,10 +16,10 @@ const Show_products = () => {
   const [products, setProducts] = useState([]);
 
 useEffect(() => {
-   ProductApi.get("/listproducts/")
+   Api.get("/Get_all_products/")
     .then((response) => {
       console.log('✅ Data fetched:', response.data);
-      setProducts(response.data?.data || []);
+      setProducts(response.data?.Data || []);
     })
     .catch((error) => {
       console.error(' Error fetching products:', error);
@@ -64,7 +63,7 @@ useEffect(() => {
               >
                 {val.image ? (
                   <img
-                    src={val.image}
+                    src={`http://127.0.0.1:8000${val.image}`}
                     alt={val.name}
                     className="rounded-lg h-72 w-full object-cover"
                   />
@@ -74,7 +73,7 @@ useEffect(() => {
                   </div>
                 )}
                 <h2 className="mt-3 text-xl font-semibold">{val.name}</h2>
-                <p className="text-sm text-gray-500">{val.category}</p>
+                <p className="text-sm text-gray-500">{val.description}</p>
               </div>
             ))}
           </Carousel>

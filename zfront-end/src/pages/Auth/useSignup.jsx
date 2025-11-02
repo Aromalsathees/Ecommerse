@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Api } from "../../api";
 import { useNavigate } from "react-router-dom";
 
-export const useLogin = () => {
+export const useSignup = () => {
   const navigate = useNavigate();
-  const [Forms, SetForms] = useState({ email: "", password: "" });
+  const [Forms, SetForms] = useState({ username: "", email: "", password: "", password2: "" });
   const [Errors, SetErrors] = useState("");
 
   const handleChange = (e) => {
@@ -14,18 +14,18 @@ export const useLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login payload:", Forms);
+    console.log("Payload sent to backend:", Forms);
 
-    Api.post("/User/login/", Forms)
+    Api.post("/User/signup/", Forms)
       .then((response) => {
-        console.log("Login success:", response.data);
+        console.log("Signup success:", response.data);
         localStorage.setItem("access", response.data.token.access);
         localStorage.setItem("refresh", response.data.token.refresh);
-        navigate("/"); // redirect after login
+        navigate("/"); // redirect after signup
       })
       .catch((error) => {
-        console.log("Login error:", error.response);
-        SetErrors(error.response?.data.message || "Login failed");
+        console.log("Signup errors:", error.response);
+        SetErrors(error.response?.data.message || "Signup failed");
       });
   };
 

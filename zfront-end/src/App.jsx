@@ -9,7 +9,8 @@ import Testimonials from './pages/Home/Testimonials.jsx'
 import Blog from './pages/Home/Blog.jsx'
 import Footer from './components/layout/Footer.jsx'
 import Navbar from './components/layout/Navbar.jsx'
-import Login from './pages/Auth/Login.jsx'
+import LoginForm from './pages/Auth/LoginForm.jsx'
+import SignupForm from './pages/Auth/SignupForm.jsx'
 import Show_products from './pages/Products/Show_products.jsx'
 import Show_pro2 from './pages/Products/Show_pro2.jsx'
 import Show_pro3 from './pages/Products/Show_pro3.jsx'
@@ -53,7 +54,13 @@ const App = () => {
       <Route
       path='/login'
       element={
-        <Login/>
+        <LoginForm/>
+      }/>
+
+      <Route
+      path='/signup'
+      element={
+        <SignupForm/>
       }/>
 
 
