@@ -18,3 +18,8 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
+
+
+class Orders(models.Model):
+    cart_name = models.ForeignKey(CartItem,on_delete=models.CASCADE)
+    price = models.CharField()

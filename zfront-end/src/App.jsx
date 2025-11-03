@@ -96,7 +96,7 @@ const App = () => {
      }/>
 
      <Route
-     path='/payoptions'
+     path='/payoptions/:id'
      element={
       <>
       <Pay_options1/>

@@ -1,6 +1,13 @@
 from .models import CustomUser
 from rest_framework import serializers
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username']
+
+
 class SignupSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
     email = serializers.EmailField(required=True)

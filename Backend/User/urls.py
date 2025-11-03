@@ -8,5 +8,5 @@ urlpatterns = [
     path('logout/',Logout.as_view(),name='logout'),
     path('signup/',Signup.as_view(),name='signup'),
     path('refresh_token/',get_refresh_token,name='token'),
-    
+    path('get_user_data/',Get_user_Data.as_view(),name='userdata'),
 ]

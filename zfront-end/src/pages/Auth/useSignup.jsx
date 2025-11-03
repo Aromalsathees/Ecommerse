@@ -19,8 +19,11 @@ export const useSignup = () => {
     Api.post("/User/signup/", Forms)
       .then((response) => {
         console.log("Signup success:", response.data);
-        localStorage.setItem("access", response.data.token.access);
+
+        localStorage.setItem("token", response.data.token.access);
         localStorage.setItem("refresh", response.data.token.refresh);
+        // localStorage.setItem("access", response.data.token.access);
+        // localStorage.setItem("refresh", response.data.token.refresh);
         navigate("/"); // redirect after signup
       })
       .catch((error) => {
@@ -31,3 +34,6 @@ export const useSignup = () => {
 
   return { handleChange, handleSubmit, Forms, Errors };
 };
+
+
+

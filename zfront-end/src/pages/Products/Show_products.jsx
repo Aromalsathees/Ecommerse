@@ -74,6 +74,7 @@ useEffect(() => {
                 )}
                 <h2 className="mt-3 text-xl font-semibold">{val.name}</h2>
                 <p className="text-sm text-gray-500">{val.description}</p>
+        
               </div>
             ))}
           </Carousel>
