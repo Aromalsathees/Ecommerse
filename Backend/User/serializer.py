@@ -15,8 +15,9 @@ class SignupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password', 'password2']
+        fields = ['username', 'email', 'password', 'password2' ,'is_admin']
         extra_kwargs = {'password': {'write_only': True}}
+        read_only_fields = ['is_admin']
 
     def validate(self, data):
         # Password match

@@ -20,11 +20,20 @@ export const useLogin = () => {
       .then((response) => {
         console.log("Login success:", response.data);
 
+        // ✅ Save tokens
         localStorage.setItem("token", response.data.token.access);
         localStorage.setItem("refresh", response.data.token.refresh);
-        // localStorage.setItem("access", response.data.token.access);
-        // localStorage.setItem("refresh", response.data.token.refresh);
-        navigate("/"); // redirect after login
+
+        // ✅ Store user info too
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("is_admin", response.data.is_admin);
+
+        // ✅ Redirect based on role
+        if (response.data.is_admin) {
+          navigate("/admin"); // admin dashboard
+        } else {
+          navigate("/"); // normal user home
+        }
       })
       .catch((error) => {
         console.log("Login error:", error.response);
