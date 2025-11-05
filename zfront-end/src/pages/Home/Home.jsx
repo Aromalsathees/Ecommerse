@@ -4,7 +4,7 @@ const Home = () => {
   return (
       <section id='home'>
 
-        <div className='relative w-screen flex justify-center'>
+        <div className='relative w-full flex justify-center'>
           <img 
             className='w-full h-180 lg:object-cover' 
             src="https://img.freepik.com/free-photo/retro-living-room-interior-design_53876-145503.jpg?semt=ais_hybrid&w=740&q=80" 
@@ -26,7 +26,7 @@ const Home = () => {
 
                <div className="flex justify-center relative">
                    <input className="rounded-full p-3 mt-4 w-64 border text-white font-bold text-sm  border-gray-300" type="text" placeholder="Search furniture"/>
-                    <span className='absolute top-7 left-68 text-white material-symbols-outlined'>search</span>
+                    <span className='absolute top-7 left-68 lg:left-100 text-white material-symbols-outlined'>search</span>
                </div>
 
                <div className="flex justify-center mt-10">

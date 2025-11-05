@@ -5,13 +5,13 @@ import BlogDatas from '../../components/cards/BlogDatas'
 const Blog = () => {
   return (
     <main id='blog'>
-        <div className='max-w-6xl mt-10 px-6 mx-auto'>
-            <h1 className='text-4xl font-bold font-serif '>Recent Blog</h1>
+        <div className='w-full lg:px-12 mx-auto mt-10 px-6'>
+            <h1 className='lg:text-4xl text-2xl font-bold font-serif lg:ml-12'>Recent Blog</h1>
           
         {BlogDatas.map((val,ind)=>(
-              <div className='rounded-md mt-5 ' key={ind}>
-                 <img src={val.img} alt="" />
-                 <h1 className='font-serif text-semibold'>{val.desc}</h1>
+              <div className='rounded-md mt-5 lg:w-full px-10' key={ind}>
+                 <img className='lg:w-full rounded-md ' src={val.img} alt="" />
+                 <h1 className='font-serif text-semibold lg:text-2xl'>{val.desc}</h1>
             </div>
         ))}
 

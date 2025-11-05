@@ -67,16 +67,7 @@ const LoginForm = () => {
           </span>
         </p>
 
-        {/* Optional Admin Signup Link */}
-        <p className="text-gray-600 font-medium mt-2">
-          Are you an admin?{" "}
-          <span
-            className="text-blue-700 font-semibold cursor-pointer hover:underline"
-            onClick={() => navigate("/admin-signup")}
-          >
-            Create Admin Account
-          </span>
-        </p>
+
       </div>
     </main>
   );

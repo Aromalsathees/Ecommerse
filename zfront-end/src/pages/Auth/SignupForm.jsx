@@ -1,13 +1,14 @@
 import React from "react";
 import { useSignup } from "./useSignup";
+import { Link } from 'react-router-dom'
 import loginimage from "../../assets/Images/log.jpg";
 
 const SignupForm = () => {
   const { handleChange, handleSubmit, Forms, Errors } = useSignup();
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <div className="bg-white shadow-lg rounded-3xl p-8 w-full max-w-md text-center">
+    <main className="min-h-screen lg:w-screen flex items-center justify-center bg-gray-50 p-6">
+      <div className="lg:w-full bg-white shadow-lg rounded-3xl p-8 w-full max-w-md text-center">
         <img
           src={loginimage}
           alt="Login"
@@ -47,9 +48,11 @@ const SignupForm = () => {
 
         <p className="text-gray-600 font-medium mt-4">
           Already have an account?{" "}
-          <span className="text-blue-700 font-semibold cursor-pointer hover:underline">
-            Sign In
-          </span>
+          <Link to='/login'>
+            <span className="text-blue-700 font-semibold cursor-pointer hover:underline">
+              Log In
+            </span>
+          </Link>
         </p>
       </div>
     </main>

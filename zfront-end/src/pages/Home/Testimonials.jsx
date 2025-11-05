@@ -13,7 +13,7 @@ const Testimonials = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 mt-10" id='testimonials'>
-      <h2 className="text-4xl font-bold text-center mb-8 font-serif">Testimonials</h2>
+      <h2 className="lg:text-6xl text-2xl font-bold text-center mb-8 font-serif">Testimonials</h2>
       <Carousel
         responsive={responsive}
         infinite={true}

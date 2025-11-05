@@ -7,7 +7,6 @@ const Show_pro2 = () => {
   const [Errors, setErrors] = useState('');
   const navigate = useNavigate();
 
-  // ✅ Fetch all products
   useEffect(() => {
     Api.get("/Get_all_products/")
       .then((response) => {
@@ -39,8 +38,8 @@ const Show_pro2 = () => {
   };
 
   return (
-    <main className="max-w-6xl mx-auto p-4 mt-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Products</h1>
+    <main className="w-full mx-auto lg:px-12 p-4 mt-10">
+      <h1 className="text-2xl font-bold mb-6 text-center font-serif">Products</h1>
 
       {products.length === 0 && !Errors && (
         <p className="text-gray-600 text-center">Loading products...</p>
@@ -50,7 +49,7 @@ const Show_pro2 = () => {
         <p className="text-red-600 text-center mb-4">{Errors}</p>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:w-full lg:px-25">
         {products.map((val) => (
           <div
             key={val.id}
@@ -63,24 +62,26 @@ const Show_pro2 = () => {
             />
             <h1 className="font-serif font-bold text-xl">{val.name}</h1>
             <p className="text-gray-500 text-sm mt-1">Elegant and Comfortable</p>
-            <p className="text-lg font-semibold mt-2 text-blue-800">₹{val.price}</p>
+            <p className="text-lg font-semibold mt-2 text-gray-700">₹{val.price}</p>
 
             <div className="flex justify-center gap-6 mt-4">
               {/* ✅ Direct Buy */}
               <button
                 onClick={() => handleBuyNow(val.id)}
-                className="bg-blue-950 hover:bg-blue-800 text-white font-semibold rounded-full px-5 py-2 shadow-md"
+                className="bg-gray-700 hover:bg-blue-800 text-white font-semibold rounded-full px-5 py-2 shadow-md"
               >
                 Buy
               </button>
 
               {/* ✅ Add to Cart */}
-              <button
-                onClick={() => Add_to_cart(val.id)}
-                className="bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-full px-5 py-2 shadow-md"
-              >
-                Cart
-              </button>
+              <Link to='/cart'>
+                <button
+                  onClick={() => Add_to_cart(val.id)}
+                  className="bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-full px-5 py-2 shadow-md"
+                >
+                  Cart
+                </button>
+              </Link>
             </div>
           </div>
         ))}

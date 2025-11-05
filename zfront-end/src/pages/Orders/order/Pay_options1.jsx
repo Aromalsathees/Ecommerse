@@ -107,17 +107,15 @@ const PayOptions = () => {
                 <span className="font-medium text-lg">{opt.title}</span>
               </div>
               <span
-                className={`material-symbols-outlined transition-transform duration-300 ${
-                  open === opt.id ? 'rotate-180' : ''
-                }`}
+                className={`material-symbols-outlined transition-transform duration-300 ${open === opt.id ? 'rotate-180' : ''
+                  }`}
               >
                 expand_more
               </span>
             </button>
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                open === opt.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-              }`}
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${open === opt.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
             >
               <div className="flex justify-between mx-auto p-4">
                 <div className="text-gray-600 bg-gray-50">{opt.content}</div>

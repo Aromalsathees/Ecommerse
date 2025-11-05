@@ -1,14 +1,11 @@
 import React from 'react'
+import {useState,useEffect} from 'react'
+import { Api } from '../../api'
 
 const Admin_users = () => {
-  const products = [
-    { id: 1, name: 'iPhone 15', category: 'Electronics', price: '₹79,999', stock: 20 },
-    { id: 2, name: 'Nike Air Max', category: 'Footwear', price: '₹9,999', stock: 50 },
-    { id: 3, name: 'MacBook Air M3', category: 'Electronics', price: '₹1,29,999', stock: 10 },
-  ]
 
   return (
-    <main className="max-w-6xl mx-auto bg-gray-900 min-h-screen p-6 text-white">
+    <main className="w-fullmx-auto bg-gray-900 min-h-screen p-6 text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 ">
         <h1 className="font-bold font-serif text-3xl sm:text-4xl mb-3 sm:mb-0">
@@ -45,7 +42,7 @@ const Admin_users = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-700">
-            {products.map((product) => (
+            {Users.map((item) => (
               <tr key={product.id} className="hover:bg-gray-700 transition">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.id}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{product.name}</td>

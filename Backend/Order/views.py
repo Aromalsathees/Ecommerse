@@ -36,31 +36,53 @@ class Add_to_Cart(APIView):
         cartitem.save()
         return Response({'message': 'The product added to cart'}, status=status.HTTP_201_CREATED)
 
-            
-            
+
+class Delete_cart(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self,request,cart_id):
+        try:
+            get_cart = CartItem.objects.get(id = cart_id , cart__user=request.user)
+        except CartItem.DoesNotExist:
+            return Response({'message':'The cart Does not exists'}, status=status.HTTP_200_OK)
+
+        get_cart.delete()
+        return Response({'message':'The cart has succefully Deleted'})
+
+
+
 class Get_Cart(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Step 1: Get the user's cart
-        cart_user = Cart.objects.filter(user=request.user).first()  # ✅ Get single cart (first one)
+        get_products = CartItem.objects.all()
+        if not get_products.exists():
+            return Response({'message':'No Cart items till NOw' , 'Data':[]},status=status.HTTP_200_OK)
+        serializer = CartSerializer(get_products , many=True)
+        return Response({'message':'succefully fetched Datas' , 'Data':serializer.data}, status=status.HTTP_200_OK)
+        
 
-        if not cart_user:
-            return Response({'message': 'The user has no cart'}, status=status.HTTP_404_NOT_FOUND)
+class Get_all_orders(APIView):
+    permission_classes = [AllowAny]
 
-        # Step 2: Get all items inside that cart
-        cart_products = CartItem.objects.filter(cart=cart_user)  # ✅ use filter, not get()
-
-        # Step 3: Serialize all items (not products directly)
-        serializer = CartSerializer(cart_products, many=True)  # ✅ Use CartItemSerializer
-
-        return Response(
-            {'message': 'Successfully fetched cart', 'Data': serializer.data},
-            status=status.HTTP_200_OK
-        )
+    def get(self,request):
+        get_orders = OrderItem.objects.all()
+        if not get_orders.exists():
+            return Response({'message':'No orders', 'Data':[]}, status=status.HTTP_200_OK)
+        serializer = OrderSerializer(get_orders , many=True)
+        return Response({'message':'succefully fetched products' ,'Data':serializer.data}, status=status.HTTP_200_OK)
 
 
+class Get_user_Orders(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self,request):
+        order = Order.objects.filter(user=request.user)
+        if not order.exists():
+            return Response({'message':'The user has no Orders'}, status=status.HTTP_200_OK)
+        
+        serializer = OrdersSerializer(order ,many=True)
+        return Response({'message':'succefully fetched the Order', 'Data':serializer.data}, status=status.HTTP_200_OK)
 
 
 
@@ -143,3 +165,6 @@ class create_order(APIView):
 
         else:
             return Response({'error': 'Invalid payment method'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+

@@ -1,15 +1,25 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
+import { Api } from "../../api";
 
 const Admin_carts = () => {
-  // Sample static data — later you can replace this with your own fetched or stored products
-  const products = [
-    { id: 1, name: 'iPhone 15', category: 'Electronics', price: '₹79,999', stock: 20 },
-    { id: 2, name: 'Nike Air Max', category: 'Footwear', price: '₹9,999', stock: 50 },
-    { id: 3, name: 'MacBook Air M3', category: 'Electronics', price: '₹1,29,999', stock: 10 },
-  ]
+
+  const [products, setProducts] = useState([])
+  const [Errors, setErrors] = useState('')
+
+  useEffect(() => {
+    Api.get('/Order/get_cart/').then((response) => {
+      console.log('success :', response.data)
+      setProducts(response.data.Data)
+    }).catch((error) => {
+      console.log('error :', error.response.data)
+      setErrors(error.response?.data.message || 'something went wrong')
+    })
+  }, [])
+
 
   return (
-    <main className="max-w-6xl mx-auto bg-gray-900 min-h-screen p-6 text-white">
+    <main className="w-full mx-auto bg-gray-900 min-h-screen p-6 text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 ">
         <h1 className="font-bold font-serif text-3xl sm:text-4xl mb-3 sm:mb-0">
@@ -45,17 +55,21 @@ const Admin_carts = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-700">
-            {products.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-700 transition">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{product.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.category}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.price}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.stock}</td>
+            {products.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-700 transition">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.product?.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{item.product?.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.product?.category}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.product?.price}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{item.product?.stock}</td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        <div>
+          {Errors && <p>{Errors}</p>}
+        </div>
 
         {products.length === 0 && (
           <p className="text-gray-400 text-center py-6">No products added yet.</p>

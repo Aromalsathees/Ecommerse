@@ -4,8 +4,6 @@ import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
 import { Api } from "../../api";
 
-
-
 const Show_products = () => {
   const responsive = {
     desktop: { breakpoint: { max: 3000, min: 1024 }, items: 3 },
@@ -15,20 +13,20 @@ const Show_products = () => {
 
   const [products, setProducts] = useState([]);
 
-useEffect(() => {
-   Api.get("/Get_all_products/")
-    .then((response) => {
-      console.log('✅ Data fetched:', response.data);
-      setProducts(response.data?.Data || []);
-    })
-    .catch((error) => {
-      console.error(' Error fetching products:', error);
-    });
-}, []);
+  useEffect(() => {
+    Api.get("/Get_all_products/")
+      .then((response) => {
+        console.log('✅ Data fetched:', response.data);
+        setProducts(response.data?.Data || []);
+      })
+      .catch((error) => {
+        console.error(' Error fetching products:', error);
+      });
+  }, []);
 
 
   return (
-    <main className='min-h-screen bg-white'>
+    <main className='lg:w-full h-auto  bg-white'>
       {/* Back Button */}
       <div className='flex items-center p-4'>
         <Link to='/' className='flex items-center text-gray-700 hover:text-black'>
@@ -38,15 +36,15 @@ useEffect(() => {
       </div>
 
       {/* Heading */}
-      <div className="max-w-6xl mx-auto text-center mt-8">
-        <h1 className="font-serif text-5xl font-bold mb-2">New Collections</h1>
+      <div className="max-w-6xl mx-auto text-center mt-8 px-4">
+        <h1 className="font-serif lg:text-6xl text-2xl font-bold mb-2">New Collections</h1>
         <p className="text-gray-500 text-sm">
           Discover our latest furniture collection that blends comfort and modern design.
         </p>
       </div>
 
       {/* Carousel */}
-      <div className="max-w-6xl mx-auto mt-10 px-4">
+      <div className="lg:w-full lg:px-25 mx-auto lg:mt-10 px-4">
         {products.length > 0 ? (
           <Carousel
             responsive={responsive}
@@ -74,7 +72,7 @@ useEffect(() => {
                 )}
                 <h2 className="mt-3 text-xl font-semibold">{val.name}</h2>
                 <p className="text-sm text-gray-500">{val.description}</p>
-        
+
               </div>
             ))}
           </Carousel>

@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
 import Home from "./pages/Home/Home.jsx";
 import About from "./pages/Home/About.jsx";
@@ -18,19 +23,19 @@ import Show_pro3 from "./pages/Products/Show_pro3.jsx";
 import Carts from "./pages/Orders/Cart/Carts.jsx";
 import Orders_list from "./pages/Orders/order/Orders_list.jsx";
 import Pay_options1 from "./pages/Orders/order/Pay_options1.jsx";
-
 import Admin_Navbar from "./Admin/Admin-Layouts/Admin_Navbar.jsx";
 import Admin_products from "./Admin/Admin-pages/Admin_products.jsx";
 import Admin_carts from "./Admin/Admin-pages/Admin_carts.jsx";
 import Admin_orders from "./Admin/Admin-pages/Admin_orders.jsx";
 import Admin_users from "./Admin/Admin-pages/Admin_users.jsx";
-
 import ProtectedRoute from "./components/layout/ProtectedRoute.jsx";
+import Navbar2 from './components/layout/Navbar_2.jsx'
+
 
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
 
-  // Hide navbar/footer on login/signup/admin pages
+  // Hide navbar/footer on these routes
   const hideNavbarRoutes = [
     "/login",
     "/signup",
@@ -39,6 +44,7 @@ const LayoutWrapper = ({ children }) => {
     "/admin-carts",
     "/admin-orders",
     "/admin-users",
+    '/products'
   ];
 
   const hideNavbar = hideNavbarRoutes.some((route) =>
@@ -46,11 +52,18 @@ const LayoutWrapper = ({ children }) => {
   );
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar (only if not hidden) */}
       {!hideNavbar && <Navbar />}
-      {children}
+
+      {/* Main content */}
+      <main className="flex-grow">
+        {children}
+      </main>
+
+      {/* Footer (only if not hidden) */}
       {!hideNavbar && <Footer />}
-    </>
+    </div>
   );
 };
 
@@ -88,7 +101,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/orderlist"
             element={
@@ -97,7 +109,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/payoptions/:id"
             element={
@@ -107,10 +118,12 @@ const App = () => {
             }
           />
 
+          {/* 🏷️ Product Pages */}
           <Route
             path="/products"
             element={
               <>
+                <Navbar2 />
                 <Show_products />
                 <Show_pro2 />
                 <Show_pro3 />
@@ -118,7 +131,8 @@ const App = () => {
             }
           />
 
-          {/* 🧑‍💼 Admin Protected Routes */}
+
+          {/* 🧑‍💼 Admin Protected Pages */}
           <Route
             path="/admin"
             element={
@@ -130,7 +144,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin-carts"
             element={
@@ -142,7 +155,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin-orders"
             element={
@@ -154,7 +166,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin-users"
             element={
